@@ -92,6 +92,7 @@ class FluentSender(object):
                                        {"level": "CRITICAL",
                                         "message": "Can't output to log",
                                         "traceback": traceback.format_exc()})
+            raise
         return self._send(bytes_)
 
     @property
@@ -116,6 +117,7 @@ class FluentSender(object):
                     self._send_data(self.pendings)
                 except Exception:
                     self._call_buffer_overflow_handler(self.pendings)
+                    raise
 
             self._close()
             self.pendings = None
@@ -247,4 +249,5 @@ class FluentSender(object):
         try:
             self.close()
         except Exception as e:  # pragma: no cover
+            raise
             self.last_error = e
